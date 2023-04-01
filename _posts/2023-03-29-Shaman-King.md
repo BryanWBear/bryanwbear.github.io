@@ -91,7 +91,7 @@ load_dotenv()
 EMBEDDING_MODEL = "text-embedding-ada-002"
 COMPLETION_MODEL = "text-davinci-003"
 openai.api_key = os.getenv('OPENAI_API_KEY')
-
+```
 
 <br>
 <br>
