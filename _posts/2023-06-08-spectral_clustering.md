@@ -357,10 +357,3 @@ for n_neighbors in range(1, 5):
 
     
 ![png](/assets/images/spectral_clustering_files/spectral_clustering_34_3.png)
-    
-
-
-
-```python
-
-```

@@ -1,6 +1,6 @@
 # Overview
 
-This is the code for my blog. It uses Jeykll as a static site generator
+This is the code for my blog. It uses Jeykll as a static site generator.
 
 ## Creating a new post from ipynb
 
