@@ -1,16 +1,110 @@
----
-layout: default
-title: {{ site.name }}
----
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bryan's MapleWorld — Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
 
-<div id="home">
-  <h1>Blog Posts</h1>
-  <ul class="posts">
-    {% for post in site.posts %}
-      <li><span>{{ post.date | date_to_string }}</span> &raquo; <a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></li>
-      <!-- {% if post.excerpt %}
-          {{ post.excerpt }}
-      {% endif %} -->
-    {% endfor %}
-  </ul>
-</div>
+  <!-- Right-side inventory panel -->
+  <div id="inventory">
+    <!-- Title bar -->
+    <div id="inv-titlebar">
+      <span id="inv-title">ITEM INVENTORY</span>
+      <button id="inv-close">×</button>
+    </div>
+
+    <!-- Tabs -->
+    <div id="inv-tabs">
+      <button class="inv-tab active" data-cat="all">ALL</button>
+      <button class="inv-tab" data-cat="tech">TECH</button>
+      <button class="inv-tab" data-cat="personal">LIFE</button>
+      <button class="inv-tab" data-cat="projects">PROJ</button>
+      <button class="inv-tab" data-cat="about">INFO</button>
+    </div>
+
+    <!-- Slot grid -->
+    <div id="inv-body">
+      <div id="inv-grid"></div>
+      <div id="inv-scrollbar">
+        <div id="inv-scroll-up">▲</div>
+        <div id="inv-scroll-track"><div id="inv-scroll-thumb"></div></div>
+        <div id="inv-scroll-down">▼</div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div id="inv-footer">
+      <div class="inv-footer-row">
+        <div class="inv-footer-label">
+          <span class="inv-coin">●</span> MESOS
+        </div>
+        <div class="inv-footer-val" id="inv-mesos">0</div>
+        <button class="inv-footer-btn">≡</button>
+        <button class="inv-footer-btn">↦</button>
+      </div>
+      <div class="inv-footer-row">
+        <div class="inv-footer-label inv-points-label">
+          <span class="inv-star">★</span> MAPLE POINTS
+        </div>
+        <div class="inv-footer-val" id="inv-points">100</div>
+      </div>
+      <div id="inv-action-bar">
+        <button class="inv-action-btn blue"><img src="assets/icons/gear.svg" alt="Settings"></button>
+        <button class="inv-action-btn blue"><img src="assets/icons/plus.svg" alt="Add"></button>
+        <button class="inv-action-btn blue"><img src="assets/icons/magnify.svg" alt="Search"></button>
+        <button class="inv-action-btn pink"><img src="assets/icons/sort.svg" alt="Sort"></button>
+        <button class="inv-action-btn pink"><img src="assets/icons/scope.svg" alt="Filter"></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article modal -->
+  <div id="modal-overlay" class="hidden">
+    <div id="modal-window">
+      <div id="modal-titlebar">
+        <canvas id="modal-icon-canvas" width="32" height="32"></canvas>
+        <span id="modal-item-name"></span>
+        <button id="modal-close-btn" title="Close">✕</button>
+      </div>
+      <div id="modal-cat-badge"></div>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <!-- Bottom hint bar -->
+  <div id="hint-bar">⚔ Click mushrooms to attack &nbsp;•&nbsp; Collect glowing drops &nbsp;•&nbsp; Open items in inventory to read!</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script type="module" src="js/main.js?v=19"></script>
+  <script>
+    // Make inventory draggable
+    const inv = document.getElementById('inventory');
+    const titlebar = document.getElementById('inv-titlebar');
+    let dragging = false, ox = 0, oy = 0;
+    titlebar.addEventListener('mousedown', e => {
+      if (e.target.id === 'inv-close') return;
+      dragging = true;
+      ox = e.clientX - inv.offsetLeft;
+      oy = e.clientY - inv.offsetTop;
+      inv.style.right = 'auto';
+      e.preventDefault();
+    });
+    document.addEventListener('mousemove', e => {
+      if (!dragging) return;
+      inv.style.left = (e.clientX - ox) + 'px';
+      inv.style.top  = (e.clientY - oy) + 'px';
+    });
+    document.addEventListener('mouseup', () => dragging = false);
+  </script>
+</body>
+</html>
